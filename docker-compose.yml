@@ -1,0 +1,20 @@
+version: '3'
+services:
+#  postgres:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.postgres
+#    environment:
+#      POSTGRES_PASSWORD: docker
+#      POSTGRES_DB: docker
+#    ports:
+#      - "5433:5432"
+
+  your-app:
+    build:
+      context: .
+    image: booking-service:1.0
+    ports:
+      - "8080:8080"
+#    depends_on:
+#      - postgres

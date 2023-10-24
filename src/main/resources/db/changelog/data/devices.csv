@@ -1,0 +1,11 @@
+imei,model,available,description
+1234567890,Samsung Galaxy S9,true,Samsung's flagship phone
+2345678901,Samsung Galaxy S8,true,Previous Samsung flagship
+3456789012,Samsung Galaxy S8,true,Previous Samsung flagship
+4567890123,Motorola Nexus 6,true,Google Nexus phone
+5678901234,Oneplus 9,true,Oneplus's latest phone
+6789012345,Apple iPhone 13,true,Apple's latest iPhone
+7890123456,Apple iPhone 12,true,Apple's previous iPhone
+8901234567,Apple iPhone 11,true,Apple's previous iPhone
+9012345678,iPhone X,true,Apple's flagship from the past
+1234512345,Nokia 3310,true,Legendary Nokia phone
