@@ -17,7 +17,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final DeviceRepository deviceRepository;
     private final BookingConverter bookingConverter;
-    private final DeviceLockRepository deviceLockRepository; // Inject your DeviceLockRepository
+    private final DeviceLockRepository deviceLockRepository;
 
     @Autowired
     public BookingServiceImpl(
@@ -36,13 +36,9 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public String book(MobileBooking mobileBooking) {
         BookingEntity bookingEntity = bookingConverter.convertToEntity(mobileBooking);
-        //Check if device is available
         if(!deviceRepository.existsDeviceByIdAndAvailableTrue(mobileBooking.getDeviceId()))
             return "Impossible to book this device";
-        //create a db transaction
-        //Take lock on device is available on device table
         deviceLockRepository.lockDeviceByIdAndAvailable(mobileBooking.getDeviceId(), true);
-       //Insert into table mobileBooking
         bookingRepository.save(bookingEntity);
         deviceRepository.updateDeviceAvailability(mobileBooking.getDeviceId(), false);
         return "Device booked successfully.";

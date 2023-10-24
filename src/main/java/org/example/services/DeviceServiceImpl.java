@@ -61,7 +61,6 @@ public class DeviceServiceImpl implements DeviceService {
             MobileDevice mobileDevice = deviceConverter.convertToMobileDevice(deviceEntity);
             logger.info("mobile device: {}", mobileDevice);
 
-            // Fetch the latest booking for the device
             BookingEntity latestBooking = bookingRepository.findTopByDeviceEntityOrderByBookedAtDesc(deviceEntity);
 
             if (latestBooking != null) {
