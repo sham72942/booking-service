@@ -2,66 +2,61 @@ package org.example.services;
 
 import org.example.converters.BookingConverter;
 import org.example.dao.entity.BookingEntity;
+import org.example.dao.entity.DeviceEntity;
 import org.example.dao.repository.BookingRepository;
-import org.example.dao.repository.DeviceLockRepository;
 import org.example.dao.repository.DeviceRepository;
+import org.example.exceptions.EntityNotFound;
 import org.example.models.MobileBooking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-
     private final BookingRepository bookingRepository;
     private final DeviceRepository deviceRepository;
     private final BookingConverter bookingConverter;
-    private final DeviceLockRepository deviceLockRepository;
 
     @Autowired
     public BookingServiceImpl(
             BookingRepository bookingRepository,
             DeviceRepository deviceRepository,
-            BookingConverter bookingConverter,
-            DeviceLockRepository deviceLockRepository
+            BookingConverter bookingConverter
     ) {
         this.bookingRepository = bookingRepository;
         this.deviceRepository = deviceRepository;
         this.bookingConverter = bookingConverter;
-        this.deviceLockRepository = deviceLockRepository;
     }
 
-
     @Transactional
-    public String book(MobileBooking mobileBooking) {
+    public String bookDevice(MobileBooking mobileBooking) {
         BookingEntity bookingEntity = bookingConverter.convertToEntity(mobileBooking);
-        if(!deviceRepository.existsDeviceByIdAndAvailableTrue(mobileBooking.getDeviceId()))
-            return "Impossible to book this device";
-        deviceLockRepository.lockDeviceByIdAndAvailable(mobileBooking.getDeviceId(), true);
+
+        DeviceEntity deviceEntity = deviceRepository.lockDeviceById(mobileBooking.getDeviceId())
+                .orElseThrow(() -> new EntityNotFound("Device is unavailable for booking"));
+
         bookingRepository.save(bookingEntity);
-        deviceRepository.updateDeviceAvailability(mobileBooking.getDeviceId(), false);
+        deviceEntity.setAvailable(false);
+        deviceRepository.save(deviceEntity);
         return "Device booked successfully.";
     }
 
+
     @Transactional
-    public String _return(MobileBooking mobileBooking) {
-        if (!deviceRepository.existsDeviceByIdAndAvailableFalse(mobileBooking.getDeviceId())) {
-            return "Impossible to return this device";
-        }
+    public String returnDevice(MobileBooking mobileBooking) {
 
-        deviceLockRepository.lockDeviceByIdAndAvailable(mobileBooking.getDeviceId(), false);
+        BookingEntity bookingEntity = bookingRepository.findByDeviceIdAndReturnedAtIsNull(mobileBooking.getDeviceId())
+                .orElseThrow(() -> new EntityNotFound("No current mobileBooking found for this device"));
+        DeviceEntity deviceEntity = deviceRepository.findById(mobileBooking.getDeviceId())
+                .orElseThrow(() -> new EntityNotFound("Device not found"));
 
-        int updatedRowCount = bookingRepository.updateReturnedAtForDeviceAndEmployee(
-                mobileBooking.getDeviceId(),
-                mobileBooking.getEmployeeId()
-        );
+        bookingEntity.setReturnedAt(LocalDateTime.now());
+        bookingRepository.save(bookingEntity);
 
-        if (updatedRowCount == 0) {
-            return "No current mobileBooking found for this device and employee.";
-        }
-
-        deviceRepository.updateDeviceAvailability(mobileBooking.getDeviceId(), true);
+        deviceEntity.setAvailable(true);
+        deviceRepository.save(deviceEntity);
 
         return "Device returned successfully.";
     }

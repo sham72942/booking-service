@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a Mobile Device Booking System for managing the availability and booking of mobile devices. It allows employees to book or return mobile devices for testing purposes. This README provides an overview of the project's database design, API endpoints, and JSON models.
+This project implements a Mobile Device Booking System for managing the availability and booking of mobile devices. It allows employees to book or return mobile devices for testing purposes. This README provides an overview of the project's database design, API endpoints, and JSON API models.
 
 ## Database Schema Design
 
@@ -67,31 +67,40 @@ This project implements a Mobile Device Booking System for managing the availabi
 
 [//]: # (- **Description**: Retrieves the status of all devices.)
 
-## JSON Models
+## JSON API Models
 
 ### Device
 ```json
 {
     "id": 1,
     "imei": "1234554321",
-    "name": "Samsung S23",
-    "description": "Some Samsung mobile",
+    "model": "Samsung S23",
     "available": true,
-    "booked_at": "",
-    "booked_by": 1234
+    "description": "Some Samsung mobile",
+    "bookedAt": "",
+    "bookedBy": 1234
 }
 ```
 
-### Employee
-```json
-{
-    "id": 200,
-    "userName": "usr",
-    "name": "Shamoel",
-    "age": 30,
-    "address": "Ranchi"
-}
-```
+[//]: # (### Employee)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (    "id": 200,)
+
+[//]: # (    "userName": "usr",)
+
+[//]: # (    "name": "Shamoel",)
+
+[//]: # (    "age": 30,)
+
+[//]: # (    "address": "Ranchi")
+
+[//]: # (})
+
+[//]: # (```)
 
 [//]: # (### Device Status)
 
@@ -128,6 +137,6 @@ This project implements a Mobile Device Booking System for managing the availabi
 {
   "deviceId": 1,
   "employeeId": 2,
-  "action": "book/return"
+  "action": "BOOK/RETURN"
 }
 ```

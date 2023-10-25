@@ -1,7 +1,6 @@
 package org.example.dao.entity;
 
 import lombok.Data;
-import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
