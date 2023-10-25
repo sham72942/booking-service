@@ -65,14 +65,5 @@
             </column>
         </createTable>
     </changeSet>
-    
-<!--    <changeSet id="4_add_unique_device_id_returned_at_null" author="shamoel">-->
-<!--        <sql>-->
-<!--            ALTER TABLE booking-->
-<!--            ADD CONSTRAINT unique_device_booking_returned_at_null-->
-<!--            UNIQUE (device_id, returned_at)-->
-<!--            WHERE returned_at IS NULL;-->
-<!--        </sql>-->
-<!--    </changeSet>-->
 
 </databaseChangeLog>
