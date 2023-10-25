@@ -4,6 +4,23 @@
 
 This project implements a Mobile Device Booking System for managing the availability and booking of mobile devices. It allows employees to book or return mobile devices for testing purposes. This README provides an overview of the project's database design, API endpoints, and JSON API models.
 
+## Running the Project
+```
+docker-compose up --build
+```
+docker-compose up is setup using docker-compose.yml file, it has 2 services, the first is a postgres being run at 5433 port and the second is the application being run at 8080 port.
+
+The app docker container is created using Dockerfile, it has 2 stages, the first stage is to build the application using maven and the second stage is to run the application using java.
+
+## Testing the Project
+### Testing is done using postman & Jmeter
+```agsl
+Postman Collection: https://api.postman.com/collections/13375656-57883421-9d2c-44ce-a484-9654a3c51f5b?access_key=PMAT-01HDK3FDXMSJKQCKV1RJ5FEQNZ
+```
+```agsl
+jmx file is attached in the project root directory
+```
+
 ## Database Schema Design
 
 ### *Employee*
